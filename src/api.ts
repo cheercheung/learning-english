@@ -31,7 +31,7 @@ Respond with ONLY a valid JSON object (no additional text) in this exact format:
 }
 
 🔍 Expression Type Guide:
-- "directExpression" (普通表达)：A common literal or textbook-style phrase that non-native speakers might say. It is grammatically correct but may sound awkward, overly formal, or translated directly from another language.
+- "directExpression" (普通表达)：A common literal or textbook-style phrase that non-native speakers might say. It is grammatically correct but may sound awkward, overly formal, or translated directly from another language,very simple,may use 3 or 4 words.
 - "nativeExpression" (地道表达)：A natural, conversational phrase that native speakers commonly use in the same context. It sounds fluid, emotionally appropriate, and culturally authentic.
 
 ✅ Focus on short, everyday phrases (not long sentences or formal writing).

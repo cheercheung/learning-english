@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { generateExpression, generateImage } from './api'
+import { generateExpression } from './api'
 
 interface Expression {
   topic: string
@@ -7,12 +7,10 @@ interface Expression {
   directExpression: string
   nativeExpression: string
   category: string
-  imagePrompt: string
 }
 
 function App() {
   const [currentExpression, setCurrentExpression] = useState<Expression | null>(null)
-  const [imageUrl, setImageUrl] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string>('')
 
@@ -24,10 +22,6 @@ function App() {
       // Generate new expression using AI
       const newExpression = await generateExpression()
       setCurrentExpression(newExpression)
-
-      // Generate corresponding image
-      const newImageUrl = await generateImage(newExpression.imagePrompt)
-      setImageUrl(newImageUrl)
 
     } catch (err) {
       console.error('Error generating content:', err)
@@ -98,10 +92,9 @@ function App() {
             </p>
           </div>
 
-          {/* Row 2: 2 Columns - Comparison Cards + Image */}
+          {/* Row 2: Comparison Cards */}
           <div className="p-8">
-            <div className="grid lg:grid-cols-2 gap-8">
-              {/* Column 1: Direct Comparison Cards */}
+            <div className="max-w-2xl mx-auto">
               <div className="space-y-6">
                 {/* Direct Expression Card */}
                 <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
@@ -138,30 +131,6 @@ function App() {
                       "{currentExpression.nativeExpression}"
                     </p>
                   </div>
-                </div>
-              </div>
-
-              {/* Column 2: Image */}
-              <div className="flex items-center justify-center">
-                <div className="aspect-square w-full max-w-md bg-gray-100 rounded-2xl overflow-hidden shadow-lg">
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt={currentExpression.topic}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement
-                        target.src = `https://via.placeholder.com/400x400/3b82f6/ffffff?text=${encodeURIComponent(currentExpression.topic.split(' ').join('+'))}`
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-500">
-                      <div className="text-center">
-                        <div className="text-4xl mb-2">🎨</div>
-                        <div>AI generating image...</div>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>

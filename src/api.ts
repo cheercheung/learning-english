@@ -4,7 +4,6 @@ interface GeneratedExpression {
   directExpression: string
   nativeExpression: string
   category: string
-  imagePrompt: string
 }
 
 interface OpenRouterResponse {
@@ -25,18 +24,28 @@ Respond with ONLY a valid JSON object (no additional text) in this exact format:
 {
   "topic": "Brief topic name (3-5 words)",
   "context": "Short scenario when this phrase would be used",
-  "directExpression": "How a non-native English speaker might directly translate the phrase,super simple with several words!",
-  "nativeExpression": "How a native english speaker would say in a native way or slang",
-  "category": "One of: Daily Life, Social, Communication",
+  "directExpression": "How a non-native speaker might directly translate the phrase",
+  "nativeExpression": "How a native speaker would naturally say the same thing",
+  "category": "One of: Daily Life, Social, Weather, Emotions, Food, Business, Travel, Communication",
   "imagePrompt": "Descriptive phrase for image search (2-4 words, describe the scene)"
 }
 
-Instructions:
-- Focus on short phrases or everyday expressions (not full conversations or formal writing).
-- "directExpression" should sound like simple words combination.
-- "nativeExpression" should sound naturally ,for example i am into you,not i like you.
-- Do NOT include extra explanation — only return the JSON object.
-- Make sure both expressions mean the same thing in the same situation.`;
+🔍 Expression Type Guide:
+- "directExpression" (普通表达)：A common literal or textbook-style phrase that non-native speakers might say. It is grammatically correct but may sound awkward, overly formal, or translated directly from another language.
+- "nativeExpression" (地道表达)：A natural, conversational phrase that native speakers commonly use in the same context. It sounds fluid, emotionally appropriate, and culturally authentic.
+
+✅ Focus on short, everyday phrases (not long sentences or formal writing).
+✅ Both expressions must reflect the same meaning in the same situation.
+✅ Do NOT include explanations — only return a valid JSON object.
+
+🔁 Sample output:
+{
+  "topic": "Showing Affection",
+  "context": "You're telling someone you have romantic feelings for them.",
+  "directExpression": "I like you.",
+  "nativeExpression": "I'm into you.",
+  "category": "Emotions",
+  "imagePrompt": "romantic couple talking"}`;
 
   if (!OPENROUTER_API_KEY) {
     console.error('OpenRouter API key not found')
@@ -116,54 +125,39 @@ function getFallbackExpression(): GeneratedExpression {
       context: "You're lost and need help finding a place",
       directExpression: "Where is the bank?",
       nativeExpression: "Do you know where the bank is?",
-      category: "Daily Life",
-      imagePrompt: "person asking directions"
+      category: "Daily Life"
     },
     {
       topic: "Ordering coffee",
       context: "You want to buy coffee at a cafe",
       directExpression: "I want one coffee.",
       nativeExpression: "I'll take a coffee, please.",
-      category: "Food",
-      imagePrompt: "coffee shop counter"
+      category: "Food"
     },
     {
       topic: "Expressing gratitude",
       context: "Someone helps you with something",
       directExpression: "Thank you very much.",
       nativeExpression: "I really appreciate it!",
-      category: "Social",
-      imagePrompt: "people helping each other"
+      category: "Social"
     },
     {
       topic: "Making small talk",
       context: "You meet someone in an elevator",
       directExpression: "The weather is good today.",
       nativeExpression: "Nice day, isn't it?",
-      category: "Social",
-      imagePrompt: "people in elevator"
+      category: "Social"
     },
     {
       topic: "Declining an offer",
       context: "Someone offers you food you don't want",
       directExpression: "No, I do not want it.",
       nativeExpression: "I'm good, thanks!",
-      category: "Social",
-      imagePrompt: "person declining food"
+      category: "Social"
     }
   ]
 
   return fallbacks[Math.floor(Math.random() * fallbacks.length)]
 }
 
-export async function generateImage(prompt: string): Promise<string> {
-  // OpenRouter doesn't support image generation models
-  // Use Unsplash as the primary image source
-  return generateFallbackImage(prompt)
-}
 
-function generateFallbackImage(prompt: string): string {
-  // Use Unsplash as fallback
-  const searchTerm = prompt.replace(/\s+/g, '+')
-  return `https://source.unsplash.com/800x600/?${searchTerm}`
-}

@@ -31,7 +31,12 @@ Respond with ONLY a valid JSON object (no additional text) in this exact format:
   "imagePrompt": "Descriptive phrase for image search (2-4 words, describe the scene)"
 }
 
-Make it educational and show clear differences between formal and natural English.`
+Instructions:
+- "directExpression" should be a literal or awkward translation commonly used by non-native English speakers. It may be grammatically correct but sounds unnatural.
+- "nativeExpression" should reflect how a native speaker would naturally express the same idea in casual or everyday English.
+- Both expressions must reflect the same scenario described in "context".
+- The difference should be educational, useful, and easy to notice for English learners.
+- Do NOT include any explanations or additional text — return only the JSON object.`;
 
   if (!OPENROUTER_API_KEY) {
     console.error('OpenRouter API key not found')

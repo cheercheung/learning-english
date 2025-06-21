@@ -24,19 +24,19 @@ export async function generateExpression(): Promise<GeneratedExpression> {
 Respond with ONLY a valid JSON object (no additional text) in this exact format:
 {
   "topic": "Brief topic name (3-5 words)",
-  "context": "Scenario description (one sentence)",
-  "directExpression": "Literal/formal translation (one sentence)",
-  "nativeExpression": "Natural native speaker way (one sentence)",
-  "category": "One of: Daily Life, Social, Weather, Emotions, Food, Business, Travel, Communication",
+  "context": "Short scenario when this phrase would be used",
+  "directExpression": "How a non-native English speaker might directly translate the phrase,super simple with several words!",
+  "nativeExpression": "How a native english speaker would say in a native way or slang",
+  "category": "One of: Daily Life, Social, Communication",
   "imagePrompt": "Descriptive phrase for image search (2-4 words, describe the scene)"
 }
 
 Instructions:
-- "directExpression" should be a literal or awkward translation commonly used by non-native English speakers. It may be grammatically correct but sounds unnatural.
-- "nativeExpression" should reflect how a native speaker would naturally express the same idea in casual or everyday English.
-- Both expressions must reflect the same scenario described in "context".
-- The difference should be educational, useful, and easy to notice for English learners.
-- Do NOT include any explanations or additional text — return only the JSON object.`;
+- Focus on short phrases or everyday expressions (not full conversations or formal writing).
+- "directExpression" should sound like simple words combination.
+- "nativeExpression" should sound naturally ,for example i am into you,not i like you.
+- Do NOT include extra explanation — only return the JSON object.
+- Make sure both expressions mean the same thing in the same situation.`;
 
   if (!OPENROUTER_API_KEY) {
     console.error('OpenRouter API key not found')

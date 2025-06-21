@@ -11,7 +11,6 @@ interface WordData {
 
 function WordMemory() {
   const [currentWord, setCurrentWord] = useState<WordData | null>(null)
-  const [showAnswer, setShowAnswer] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [totalAnswered, setTotalAnswered] = useState(0)
@@ -21,18 +20,12 @@ function WordMemory() {
     const randomIndex = Math.floor(Math.random() * wordsData.length)
     setCurrentWord(wordsData[randomIndex])
     setCurrentIndex(randomIndex)
-    setShowAnswer(false)
   }
 
   // 初始化时获取第一个单词
   useEffect(() => {
     getRandomWord()
   }, [])
-
-  // 显示答案
-  const handleShowAnswer = () => {
-    setShowAnswer(true)
-  }
 
   // 记住了/没记住
   const handleRemembered = (remembered: boolean) => {
@@ -107,73 +100,54 @@ function WordMemory() {
           </div>
 
           <div className="p-8">
-            {!showAnswer ? (
-              /* 问题阶段 */
-              <div className="text-center space-y-8">
-                <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-8">
-                  <h3 className="text-2xl font-bold text-yellow-800 mb-4">
-                    🤔 猜猜这个单词的意思？
-                  </h3>
-                  <div className="text-4xl font-bold text-yellow-700 mb-4">
-                    "{currentWord.mnemonic}"
-                  </div>
-                  <p className="text-lg text-yellow-600">
-                    根据谐音提示，你能想到这个单词的意思吗？
+            {/* 单词卡片 - 直接显示所有信息 */}
+            <div className="space-y-8">
+              {/* 中文意思 */}
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8 text-center">
+                <h3 className="text-2xl font-bold text-blue-800 mb-4">
+                  📖 中文意思
+                </h3>
+                <div className="text-5xl font-bold text-blue-700 mb-4">
+                  {currentWord.meaning}
+                </div>
+              </div>
+
+              {/* 谐音记忆 */}
+              <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-8 text-center">
+                <h3 className="text-2xl font-bold text-yellow-800 mb-4">
+                  🎵 谐音记忆
+                </h3>
+                <div className="text-4xl font-bold text-yellow-700 mb-4">
+                  "{currentWord.mnemonic}"
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <p className="text-lg text-gray-700 leading-relaxed italic">
+                    {currentWord.explanation}
                   </p>
                 </div>
-
-                <button
-                  onClick={handleShowAnswer}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 text-xl shadow-lg"
-                >
-                  💡 查看答案
-                </button>
               </div>
-            ) : (
-              /* 答案阶段 */
-              <div className="space-y-8">
-                {/* 答案展示 */}
-                <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8 text-center">
-                  <h3 className="text-2xl font-bold text-green-800 mb-4">
-                    ✅ 答案揭晓
-                  </h3>
-                  <div className="text-4xl font-bold text-green-700 mb-4">
-                    {currentWord.meaning}
-                  </div>
-                  <div className="bg-white rounded-xl p-6 shadow-sm">
-                    <p className="text-lg text-gray-700 leading-relaxed">
-                      <span className="font-bold text-purple-600">谐音：</span>
-                      "{currentWord.mnemonic}" → 
-                      <span className="font-bold text-green-600 ml-2">{currentWord.meaning}</span>
-                    </p>
-                    <p className="text-gray-600 mt-4 italic">
-                      {currentWord.explanation}
-                    </p>
-                  </div>
-                </div>
 
-                {/* 记忆反馈 */}
-                <div className="text-center">
-                  <h4 className="text-xl font-bold text-gray-800 mb-6">
-                    你记住这个单词了吗？
-                  </h4>
-                  <div className="flex justify-center gap-6">
-                    <button
-                      onClick={() => handleRemembered(true)}
-                      className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 text-lg shadow-lg"
-                    >
-                      ✅ 记住了
-                    </button>
-                    <button
-                      onClick={() => handleRemembered(false)}
-                      className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 text-lg shadow-lg"
-                    >
-                      ❌ 没记住
-                    </button>
-                  </div>
+              {/* 记忆反馈 */}
+              <div className="text-center">
+                <h4 className="text-2xl font-bold text-gray-800 mb-6">
+                  你学会这个单词了吗？
+                </h4>
+                <div className="flex justify-center gap-6">
+                  <button
+                    onClick={() => handleRemembered(true)}
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 text-xl shadow-lg"
+                  >
+                    ✅ 学会了
+                  </button>
+                  <button
+                    onClick={() => handleRemembered(false)}
+                    className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 text-xl shadow-lg"
+                  >
+                    📚 没记住
+                  </button>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
 
